@@ -1,5 +1,7 @@
 -- ProjectCrew Complete Database Schema & Seed Data
 -- Import this file in phpMyAdmin or mysql CLI to set up the database and test users.
+
+SET NAMES utf8mb4;
 -- CREATE DATABASE IF NOT EXISTS majorco CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 -- USE majorco;
 
@@ -22,7 +24,7 @@ CREATE TABLE IF NOT EXISTS users (
   last_seen DATETIME NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   INDEX idx_user_email (email)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Projects Table
 CREATE TABLE IF NOT EXISTS projects (
@@ -42,7 +44,7 @@ CREATE TABLE IF NOT EXISTS projects (
   INDEX idx_user_id (user_id),
   INDEX idx_visibility (visibility),
   INDEX idx_status (status)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Project Members Table
 CREATE TABLE IF NOT EXISTS project_members (
@@ -55,7 +57,7 @@ CREATE TABLE IF NOT EXISTS project_members (
   FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
   UNIQUE KEY unique_project_user (project_id, user_id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Project Tasks Table
 CREATE TABLE IF NOT EXISTS project_tasks (
@@ -72,7 +74,7 @@ CREATE TABLE IF NOT EXISTS project_tasks (
   FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE,
   FOREIGN KEY (assigned_to) REFERENCES users(id) ON DELETE SET NULL,
   INDEX idx_project_status (project_id, status)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Project Files Table
 CREATE TABLE IF NOT EXISTS project_files (
@@ -86,7 +88,7 @@ CREATE TABLE IF NOT EXISTS project_files (
   FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
   INDEX idx_file_project (project_id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Connections Table
 CREATE TABLE IF NOT EXISTS connections (
@@ -103,7 +105,7 @@ CREATE TABLE IF NOT EXISTS connections (
   INDEX idx_partner_id (partner_id),
   INDEX idx_status (status),
   INDEX idx_conn_users (user_id, partner_id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Messages Table
 CREATE TABLE IF NOT EXISTS messages (
@@ -115,7 +117,7 @@ CREATE TABLE IF NOT EXISTS messages (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (sender_id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY (receiver_id) REFERENCES users(id) ON DELETE CASCADE
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Posts Table
 CREATE TABLE IF NOT EXISTS posts (
@@ -128,7 +130,7 @@ CREATE TABLE IF NOT EXISTS posts (
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
   INDEX idx_user_id (user_id),
   INDEX idx_created_at (created_at)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Post Likes Table
 CREATE TABLE IF NOT EXISTS post_likes (
@@ -139,7 +141,7 @@ CREATE TABLE IF NOT EXISTS post_likes (
   FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
   UNIQUE KEY unique_like (post_id, user_id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Post Comments Table
 CREATE TABLE IF NOT EXISTS post_comments (
@@ -154,7 +156,7 @@ CREATE TABLE IF NOT EXISTS post_comments (
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY (parent_id) REFERENCES post_comments(id) ON DELETE CASCADE,
   INDEX idx_post_id (post_id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- User Ratings Table
 CREATE TABLE IF NOT EXISTS user_ratings (
@@ -169,7 +171,7 @@ CREATE TABLE IF NOT EXISTS user_ratings (
   FOREIGN KEY (rater_id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY (ratee_id) REFERENCES users(id) ON DELETE CASCADE,
   UNIQUE KEY unique_rating (project_id, rater_id, ratee_id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Notifications Table
 CREATE TABLE IF NOT EXISTS notifications (
@@ -183,7 +185,7 @@ CREATE TABLE IF NOT EXISTS notifications (
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
   INDEX idx_user_id (user_id),
   INDEX idx_un_read (user_id, is_read)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
 -- --------------------------------------------------------
