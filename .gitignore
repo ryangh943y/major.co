@@ -20,5 +20,4 @@ Thumbs.db
 .idea/
 *.log
 
-# Local guide files
-DEPLOYMENT.md
+
