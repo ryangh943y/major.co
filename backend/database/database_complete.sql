@@ -194,16 +194,16 @@ CREATE TABLE IF NOT EXISTS notifications (
 
 -- Clean existing data
 SET FOREIGN_KEY_CHECKS = 0;
-TRUNCATE TABLE post_comments;
-TRUNCATE TABLE post_likes;
-TRUNCATE TABLE posts;
-TRUNCATE TABLE project_members;
-TRUNCATE TABLE projects;
-TRUNCATE TABLE connections;
-TRUNCATE TABLE messages;
-TRUNCATE TABLE notifications;
-TRUNCATE TABLE user_ratings;
-TRUNCATE TABLE users;
+DELETE FROM post_comments;
+DELETE FROM post_likes;
+DELETE FROM posts;
+DELETE FROM project_members;
+DELETE FROM projects;
+DELETE FROM connections;
+DELETE FROM messages;
+DELETE FROM notifications;
+DELETE FROM user_ratings;
+DELETE FROM users;
 SET FOREIGN_KEY_CHECKS = 1;
 
 -- Users (Hashed passwords compatible with: password123, alex123, sarah123, marcus123, elena123, david123)
