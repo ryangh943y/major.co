@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Create your ProjectCrew account — join thousands of collaborators building great projects.">
+    <title>Create Account | ProjectCrew</title>
+    <!-- Tailwind loaded ONCE -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/css/global.css">
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            background: linear-gradient(135deg, #F0F4FF 0%, #EEF2FF 100%);
+            padding: 40px 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before, body::after {
+            content: '';
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            pointer-events: none;
+            z-index: 0;
+        }
+        body::before {
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(108,92,231,0.15), transparent 70%);
+            top: -120px; right: -100px;
+        }
+        body::after {
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(74,144,226,0.15), transparent 70%);
+            bottom: -100px; left: -80px;
+        }
+
+        .register-card {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(226,232,240,0.8);
+            border-radius: 24px;
+            padding: 44px 40px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 24px 64px rgba(108,92,231,0.12), 0 8px 24px rgba(0,0,0,0.06);
+            animation: scaleIn 0.45s cubic-bezier(0.34,1.56,0.64,1) both;
+            position: relative;
+            z-index: 1;
+        }
+
+        .reg-logo {
+            display: flex; align-items: center; gap: 10px;
+            justify-content: center; margin-bottom: 24px; text-decoration: none;
+        }
+        .reg-logo-icon {
+            width: 40px; height: 40px;
+            background: linear-gradient(135deg, #6C5CE7, #4A90E2);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 14px rgba(108,92,231,0.4);
+        }
+        .reg-logo-icon svg { color: white; width: 22px; height: 22px; }
+        .reg-logo-text { font-size: 20px; font-weight: 700; color: #1A1D2E; }
+
+        .reg-title    { font-size: 24px; font-weight: 700; color: #1A1D2E; text-align: center; margin-bottom: 6px; }
+        .reg-subtitle { font-size: 14px; color: #6B7280; text-align: center; margin-bottom: 28px; }
+
+        /* Field styling */
+        .field-label {
+            display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 7px;
+        }
+        .field-input {
+            width: 100%; padding: 11px 14px;
+            border: 1.5px solid #E2E8F0;
+            border-radius: 10px;
+            font-size: 14px; font-family: 'Poppins', sans-serif; color: #1A1D2E;
+            background: #FAFBFF; outline: none;
+            transition: all 0.2s;
+        }
+        .field-input:focus {
+            border-color: #6C5CE7; background: white;
+            box-shadow: 0 0 0 3px rgba(108,92,231,0.12);
+        }
+        .field-input.error-input { border-color: #EF4444; }
+        .field-error { font-size: 12px; color: #EF4444; margin-top: 5px; display: none; }
+
+        /* Password strength */
+        .strength-bar { height: 4px; border-radius: 2px; background: #E2E8F0; overflow: hidden; margin-top: 8px; }
+        .strength-fill { height: 100%; border-radius: 2px; width: 0; transition: width 0.4s ease, background 0.4s ease; }
+        .strength-label { font-size: 11px; margin-top: 4px; font-weight: 500; height: 16px; }
+
+        /* Alert banner */
+        .alert-banner {
+            display: none; align-items: center; gap: 10px;
+            padding: 12px 16px; border-radius: 10px; font-size: 13px; font-weight: 500;
+            margin-bottom: 20px; animation: fadeInUp 0.3s ease;
+        }
+        .alert-banner.error   { display: flex; background: #FEE2E2; color: #DC2626; border: 1px solid #FECACA; }
+        .alert-banner.success { display: flex; background: #E0FBF5; color: #059669; border: 1px solid #A7F3D0; }
+
+        /* Skill tags */
+        .skills-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+        .skill-tag {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 6px 14px; border-radius: 99px; cursor: pointer;
+            font-size: 13px; font-weight: 500;
+            border: 1.5px solid #E2E8F0;
+            background: #F8FAFF; color: #6B7280;
+            transition: all 0.2s; user-select: none;
+        }
+        .skill-tag:hover { border-color: #6C5CE7; color: #6C5CE7; background: #F0EEFF; }
+        .skill-tag.selected { border-color: #6C5CE7; background: #6C5CE7; color: white; }
+        .skill-tag.selected .check-icon { display: inline; }
+        .skill-check { width: 14px; height: 14px; display: none; flex-shrink: 0; }
+        .skill-tag.selected .skill-check { display: inline; }
+
+        .add-custom-btn {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 6px 14px; border-radius: 99px; cursor: pointer;
+            font-size: 13px; font-weight: 500;
+            border: 1.5px dashed #CBD5E1;
+            background: transparent; color: #9CA3AF;
+            transition: all 0.2s;
+        }
+        .add-custom-btn:hover { border-color: #6C5CE7; color: #6C5CE7; background: #F0EEFF; }
+
+        /* Terms */
+        .terms-label {
+            display: flex; align-items: flex-start; gap: 10px;
+            font-size: 13px; color: #6B7280; cursor: pointer; line-height: 1.5;
+        }
+        .terms-label input { accent-color: #6C5CE7; margin-top: 2px; width: 16px; height: 16px; flex-shrink: 0; }
+        .terms-link { color: #6C5CE7; font-weight: 600; text-decoration: none; }
+        .terms-link:hover { text-decoration: underline; }
+
+        /* Submit button */
+        .submit-btn {
+            width: 100%; padding: 13px; font-size: 15px; font-weight: 600;
+            font-family: 'Poppins', sans-serif; color: white;
+            background: linear-gradient(135deg, #6C5CE7 0%, #4A90E2 100%);
+            border: none; border-radius: 10px; cursor: pointer;
+            transition: all 0.25s; position: relative; overflow: hidden;
+            box-shadow: 0 4px 14px rgba(108,92,231,0.4);
+        }
+        .submit-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(108,92,231,0.45);
+        }
+        .submit-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+
+        .btn-spinner {
+            display: none; width: 18px; height: 18px;
+            border: 2.5px solid rgba(255,255,255,0.4); border-top-color: white;
+            border-radius: 50%; animation: spin 0.7s linear infinite;
+            position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+        }
+        .loading .btn-spinner { display: block; }
+        .loading .btn-text-inner { opacity: 0; }
+        .btn-text-inner { transition: opacity 0.2s; }
+
+        .login-link { text-align: center; margin-top: 22px; font-size: 14px; color: #6B7280; }
+        .text-link { color: #6C5CE7; font-weight: 600; text-decoration: none; }
+        .text-link:hover { text-decoration: underline; }
+
+        /* Custom skill input popup */
+        .custom-skill-popup {
+            display: none;
+            position: fixed; inset: 0; z-index: 999;
+            background: rgba(26,29,46,0.4);
+            backdrop-filter: blur(4px);
+            align-items: center; justify-content: center;
+        }
+        .custom-skill-popup.open { display: flex; animation: fadeIn 0.2s ease; }
+        .popup-card {
+            background: white; border-radius: 16px; padding: 28px;
+            width: 100%; max-width: 360px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            animation: scaleIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        .popup-title { font-size: 16px; font-weight: 700; color: #1A1D2E; margin-bottom: 14px; }
+        .popup-input {
+            width: 100%; padding: 10px 14px;
+            border: 1.5px solid #E2E8F0; border-radius: 8px;
+            font-size: 14px; font-family: 'Poppins', sans-serif; outline: none;
+            transition: border-color 0.2s;
+        }
+        .popup-input:focus { border-color: #6C5CE7; box-shadow: 0 0 0 3px rgba(108,92,231,0.12); }
+        .popup-actions { display: flex; gap: 10px; margin-top: 16px; }
+
+        @media (max-width: 520px) {
+            .register-card { padding: 28px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="register-card">
+        <!-- Logo -->
+        <a href="index.html" class="reg-logo">
+            <div class="reg-logo-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <span class="reg-logo-text">ProjectCrew</span>
+        </a>
+
+        <h1 class="reg-title">Create Account 🚀</h1>
+        <p class="reg-subtitle">Join thousands of collaborators building great things</p>
+
+        <!-- Alert banner -->
+        <div id="alert-banner" class="alert-banner" role="alert">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span id="alert-text"></span>
+        </div>
+
+        <form id="register-form" action="backend/register.php" method="POST" novalidate>
+
+            <!-- Name row -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+                <div>
+                    <label class="field-label">First Name</label>
+                    <input name="first_name" id="first_name" required class="field-input" placeholder="John">
+                    <div id="first-name-error" class="field-error">Required</div>
+                </div>
+                <div>
+                    <label class="field-label">Last Name</label>
+                    <input name="last_name" id="last_name" required class="field-input" placeholder="Doe">
+                    <div id="last-name-error" class="field-error">Required</div>
+                </div>
+            </div>
+
+            <!-- Email -->
+            <div style="margin-bottom:16px;">
+                <label class="field-label">Email Address</label>
+                <input name="email" id="reg-email" type="email" required class="field-input" placeholder="you@example.com">
+                <div id="email-error" class="field-error">Enter a valid email.</div>
+            </div>
+
+            <!-- Password -->
+            <div style="margin-bottom:16px;">
+                <label class="field-label">Password</label>
+                <input id="password" name="password" type="password" required class="field-input" placeholder="At least 8 characters">
+                <div class="strength-bar"><div class="strength-fill" id="strength-fill"></div></div>
+                <div class="strength-label" id="strength-label"></div>
+                <div id="password-error" class="field-error">Password must be at least 8 characters.</div>
+            </div>
+
+            <!-- Confirm Password -->
+            <div style="margin-bottom:20px;">
+                <label class="field-label">Confirm Password</label>
+                <input id="confirm-password" name="confirm_password" type="password" required class="field-input" placeholder="Repeat your password">
+                <div id="confirm-error" class="field-error">Passwords do not match.</div>
+            </div>
+
+            <!-- Security Question selection -->
+            <div style="margin-bottom:16px;">
+                <label class="field-label">Security Question (For Password Recovery)</label>
+                <select name="security_question" id="security_question" required class="field-input">
+                    <option value="What was your childhood nickname?">What was your childhood nickname?</option>
+                    <option value="What is the name of your first school?">What is the name of your first school?</option>
+                    <option value="What is your favorite book?">What is your favorite book?</option>
+                    <option value="What is your mother's maiden name?">What is your mother's maiden name?</option>
+                </select>
+            </div>
+            
+            <div style="margin-bottom:20px;">
+                <label class="field-label">Security Answer</label>
+                <input id="security_answer" name="security_answer" type="text" required class="field-input" placeholder="e.g. Kitty, St. Xaviers, etc.">
+                <div id="security-answer-error" class="field-error">Security answer is required.</div>
+            </div>
+
+            <!-- Skills -->
+            <div style="margin-bottom:20px;">
+                <label class="field-label">
+                    Your Skills
+                    <span style="font-weight:400;color:#9CA3AF;font-size:12px;"> — select at least 3</span>
+                </label>
+                <div id="skills-container" class="skills-grid">
+                    <button type="button" class="skill-tag" data-skill="Web Development">
+                        <svg class="skill-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        Web Development
+                    </button>
+                    <button type="button" class="skill-tag" data-skill="UI/UX Design">
+                        <svg class="skill-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        UI/UX Design
+                    </button>
+                    <button type="button" class="skill-tag" data-skill="Mobile App">
+                        <svg class="skill-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        Mobile App
+                    </button>
+                    <button type="button" class="skill-tag" data-skill="Data Science">
+                        <svg class="skill-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        Data Science
+                    </button>
+                    <button type="button" class="skill-tag" data-skill="Marketing">
+                        <svg class="skill-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        Marketing
+                    </button>
+                    <button type="button" class="skill-tag" data-skill="Graphic Design">
+                        <svg class="skill-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        Graphic Design
+                    </button>
+                    <button type="button" class="skill-tag" data-skill="Project Management">
+                        <svg class="skill-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        Project Management
+                    </button>
+                    <button type="button" class="skill-tag" data-skill="Backend Dev">
+                        <svg class="skill-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        Backend Dev
+                    </button>
+                    <button type="button" id="add-custom-skill" class="add-custom-btn">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        Custom
+                    </button>
+                </div>
+                <div id="skills-error" class="field-error">Please select at least 3 skills.</div>
+                <input type="hidden" name="skills" id="skills-input">
+            </div>
+
+            <!-- Terms -->
+            <div style="margin-bottom:24px;">
+                <label class="terms-label">
+                    <input id="terms" name="terms" type="checkbox" required>
+                    I agree to the <a href="#" class="terms-link">Terms of Service</a> and
+                    <a href="#" class="terms-link">Privacy Policy</a>
+                </label>
+                <div id="terms-error" class="field-error">You must accept the terms to continue.</div>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" id="submit-btn" class="submit-btn">
+                <div class="btn-spinner" id="btn-spinner"></div>
+                <span class="btn-text-inner" id="btn-text">Create Account</span>
+            </button>
+        </form>
+
+        <div class="login-link">
+            Already have an account?
+            <a href="login.html" class="text-link">Sign in</a>
+        </div>
+    </div>
+
+    <!-- Custom Skill Popup -->
+    <div id="custom-skill-popup" class="custom-skill-popup" role="dialog" aria-modal="true">
+        <div class="popup-card">
+            <div class="popup-title">Add Custom Skill</div>
+            <input type="text" id="custom-skill-input" class="popup-input" placeholder="e.g. Machine Learning" maxlength="40">
+            <div class="popup-actions">
+                <button type="button" id="cancel-custom" class="btn btn-outline btn-sm" style="flex:1;">Cancel</button>
+                <button type="button" id="add-custom-confirm" class="btn btn-accent btn-sm" style="flex:1;">Add Skill</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/global.js"></script>
+    <script>
+    // ── Skill Selection ──
+    const skillsContainer = document.getElementById('skills-container');
+
+    skillsContainer.addEventListener('click', (e) => {
+        const btn = e.target.closest('.skill-tag');
+        if (!btn) return;
+        btn.classList.toggle('selected');
+    });
+
+    // ── Custom Skill Popup ──
+    const popup = document.getElementById('custom-skill-popup');
+    const customInput = document.getElementById('custom-skill-input');
+
+    document.getElementById('add-custom-skill').addEventListener('click', () => {
+        popup.classList.add('open');
+        customInput.value = '';
+        setTimeout(() => customInput.focus(), 100);
+    });
+    document.getElementById('cancel-custom').addEventListener('click', () => popup.classList.remove('open'));
+    popup.addEventListener('click', (e) => { if (e.target === popup) popup.classList.remove('open'); });
+
+    document.getElementById('add-custom-confirm').addEventListener('click', addCustomSkill);
+    customInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); addCustomSkill(); } });
+
+    function addCustomSkill() {
+        const val = customInput.value.trim();
+        if (!val) return;
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'skill-tag selected';
+        btn.dataset.skill = val;
+        btn.innerHTML = `<svg class="skill-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>${val}`;
+        skillsContainer.insertBefore(btn, document.getElementById('add-custom-skill'));
+        popup.classList.remove('open');
+    }
+
+    // ── Password Strength ──
+    const passwordInput = document.getElementById('password');
+    const strengthFill  = document.getElementById('strength-fill');
+    const strengthLabel = document.getElementById('strength-label');
+    passwordInput.addEventListener('input', () => updateStrengthMeter(passwordInput, strengthFill, strengthLabel));
+
+    // ── Form Validation ──
+    const alertBanner = document.getElementById('alert-banner');
+    const alertText   = document.getElementById('alert-text');
+
+    function showAlert(msg, type = 'error') {
+        alertBanner.className = `alert-banner ${type}`;
+        alertText.textContent = msg;
+        alertBanner.style.display = 'flex';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function showFieldError(id, msg) {
+        const el = document.getElementById(id);
+        if (el) { el.textContent = msg; el.style.display = 'block'; }
+    }
+    function hideFieldError(id) {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+    }
+
+    // Clear on input
+    ['first_name','last_name','reg-email','password','confirm-password','security_answer'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('input', () => el.classList.remove('error-input'));
+    });
+
+    document.getElementById('register-form').addEventListener('submit', (e) => {
+        alertBanner.style.display = 'none';
+        let hasError = false;
+
+        const firstName = document.getElementById('first_name').value.trim();
+        const lastName  = document.getElementById('last_name').value.trim();
+        const email     = document.getElementById('reg-email').value.trim();
+        const pass      = document.getElementById('password').value;
+        const confirm   = document.getElementById('confirm-password').value;
+        const terms     = document.getElementById('terms').checked;
+
+        if (!firstName) { document.getElementById('first_name').classList.add('error-input'); showFieldError('first-name-error','First name is required.'); hasError = true; } else hideFieldError('first-name-error');
+        if (!lastName)  { document.getElementById('last_name').classList.add('error-input');  showFieldError('last-name-error','Last name is required.');  hasError = true; } else hideFieldError('last-name-error');
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { document.getElementById('reg-email').classList.add('error-input'); showFieldError('email-error','Enter a valid email.'); hasError = true; } else hideFieldError('email-error');
+        if (pass.length < 8) { document.getElementById('password').classList.add('error-input'); showFieldError('password-error','Password must be at least 8 characters.'); hasError = true; } else hideFieldError('password-error');
+        if (pass !== confirm) { document.getElementById('confirm-password').classList.add('error-input'); showFieldError('confirm-error','Passwords do not match.'); hasError = true; } else hideFieldError('confirm-error');
+        
+        const secAns = document.getElementById('security_answer').value.trim();
+        if (!secAns) { document.getElementById('security_answer').classList.add('error-input'); showFieldError('security-answer-error','Security answer is required.'); hasError = true; } else hideFieldError('security-answer-error');
+
+        const selected = [...document.querySelectorAll('.skill-tag.selected')].map(t => t.dataset.skill).filter(Boolean);
+        if (selected.length < 3) { showFieldError('skills-error',`Please select at least 3 skills (${selected.length} selected).`); hasError = true; } else hideFieldError('skills-error');
+        if (!terms) { showFieldError('terms-error','You must accept the terms.'); hasError = true; } else hideFieldError('terms-error');
+
+        if (hasError) {
+            e.preventDefault();
+            showAlert('Please fix the highlighted errors before continuing.');
+            return;
+        }
+
+        document.getElementById('skills-input').value = selected.join(',');
+
+        const submitBtn = document.getElementById('submit-btn');
+        submitBtn.disabled = true;
+        submitBtn.classList.add('loading');
+        document.getElementById('btn-text').textContent = 'Creating account…';
+    });
+    </script>
+</body>
+</html>

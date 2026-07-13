@@ -1,0 +1,24 @@
+# php config & vendor folders
+composer.lock
+vendor/
+.gemini/
+.agents/
+
+# Local databases or uploads
+uploads/avatars/*
+!uploads/avatars/.gitkeep
+uploads/project_files/*
+!uploads/project_files/.gitkeep
+uploads/.htaccess
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# VSCode or editor folders
+.vscode/
+.idea/
+*.log
+
+# Local guide files
+DEPLOYMENT.md
