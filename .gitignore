@@ -25,3 +25,9 @@ DEPLOYMENT.md
 
 # Secure credential files
 backend/db.local.php
+backend/config.local.php
+
+# Exclude Standalone OTP Feature from GitHub
+login_otp.html
+backend/otp_send.php
+backend/otp_verify.php
