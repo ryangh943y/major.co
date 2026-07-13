@@ -22,3 +22,6 @@ Thumbs.db
 
 # Local guide files
 DEPLOYMENT.md
+
+# Secure credential files
+backend/db.local.php
