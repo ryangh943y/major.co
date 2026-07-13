@@ -1,8 +1,7 @@
 -- ProjectCrew Complete Database Schema & Seed Data
 -- Import this file in phpMyAdmin or mysql CLI to set up the database and test users.
-
-CREATE DATABASE IF NOT EXISTS majorco CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE majorco;
+-- CREATE DATABASE IF NOT EXISTS majorco CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+-- USE majorco;
 
 -- --------------------------------------------------------
 -- 1. Schema Definitions
